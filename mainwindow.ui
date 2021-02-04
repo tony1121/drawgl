@@ -83,15 +83,67 @@
     </rect>
    </property>
   </widget>
-  <widget class="QToolBar" name="mainToolBar">
+  <widget class="QStatusBar" name="statusBar"/>
+  <widget class="QToolBar" name="toolBar">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
    <attribute name="toolBarArea">
     <enum>TopToolBarArea</enum>
    </attribute>
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
+   <addaction name="separator"/>
+   <addaction name="actionOpen"/>
+   <addaction name="actionClose"/>
+   <addaction name="actionBbb"/>
   </widget>
-  <widget class="QStatusBar" name="statusBar"/>
+  <action name="actionOpen">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>../deceive/IV_Decision/gui/ico/no_ob.png</normaloff>../deceive/IV_Decision/gui/ico/no_ob.png</iconset>
+   </property>
+   <property name="text">
+    <string>open</string>
+   </property>
+   <property name="toolTip">
+    <string>open</string>
+   </property>
+  </action>
+  <action name="actionClose">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>../deceive/IV_Decision/gui/ico/reload.png</normaloff>../deceive/IV_Decision/gui/ico/reload.png</iconset>
+   </property>
+   <property name="text">
+    <string>close</string>
+   </property>
+   <property name="toolTip">
+    <string>close</string>
+   </property>
+  </action>
+  <action name="actionBbb">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>../deceive/IV_Decision/gui/ico/over.png</normaloff>../deceive/IV_Decision/gui/ico/over.png</iconset>
+   </property>
+   <property name="text">
+    <string>bbb</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>

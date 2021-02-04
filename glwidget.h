@@ -29,6 +29,8 @@ public:
     explicit GLWidget(QWidget *parent = 0);
 
 public:
+    bool bbbchecked = false;
+
 protected:
     void initializeGL();
     void paintGL();
@@ -37,6 +39,7 @@ protected:
     void mousePressEvent(QMouseEvent* event) override;
 //    void mouseReleaseEvent(QMouseEvent* event) override;
     void mouseMoveEvent(QMouseEvent* event) override;
+
     void keyPressEvent(QKeyEvent *event) override;
     void wheelEvent(QWheelEvent* event) override;
 
@@ -59,9 +62,14 @@ private:
     float wheeldelta = 1;
     float point_x;
     float point_y;
-    float Perspective_theta = 60;
+    float point_x_old = 0;
+    float point_y_old = 0;
+    float point_x_new = 0;
+    float point_y_new = 0;
+    float Perspective_theta = 90;
     float m_iMag = 1;
     float length_g;
+
 
 
 signals:

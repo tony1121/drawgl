@@ -26,7 +26,8 @@ GLWidget::GLWidget(QWidget *parent) : QGLWidget(parent)
     showNormal();
 
 //    glutInitWindowSize(100, 100);
-    setFocusPolicy(Qt::ClickFocus);
+    setFocusPolicy(Qt::ClickFocus);   //
+    setMouseTracking(true);     //
 //    glutReshapeFunc(reshape);
 
     timer = new QTimer(this);
@@ -55,16 +56,11 @@ void GLWidget::loop()
 
 void GLWidget::initializeGL()
 {
-    //下一行启用smooth shading(阴影平滑)。阴影平滑通过多边形精细的混合色彩，并对外部光进行平滑。
-    //我将在另一个教程中更详细的解释阴影平滑。
     glShadeModel(GL_SMOOTH); // 启用阴影平滑
-
     glClearColor(0.0f, 1.0f, 0.0f, 0.5f); // 蓝色背景
-
     glClearDepth(1.0f);	// 设置深度缓存
     glEnable(GL_BLEND); // 启用深度测试
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
 }
 
 
@@ -76,7 +72,7 @@ void GLWidget::paintGL()
     glLoadIdentity ();
     gluPerspective(Perspective_theta, (GLfloat) width()/(GLfloat) height() ,  0.01, 400000);
 
-    std::cout<<Perspective_theta<<std::endl;
+ //   std::cout<<Perspective_theta<<std::endl;
 
     glClearColor(0.6, 0.6,0.8, 0.5);
     glMatrixMode(GL_MODELVIEW);                                  //中设置的颜色和缓存深度等起作用
@@ -128,6 +124,20 @@ void GLWidget::paintGL()
         glEnd();
 
     }
+
+    if(bbbchecked)
+    {
+        glBegin(GL_LINES);
+        glColor3f( 0, 0, 0);
+        glVertex3i(point_x_new, point_y_new, 0);//单位cm
+        glVertex3i(point_x_old, point_y_old, 0);//单位cm
+
+  //      while(point_x_new == )
+        std::cout<<point_x_new<<"........."<<point_y_new<<std::endl;
+  //      glVertex3i((point_x, point_y);//单位cm
+        glEnd();
+    }
+
 #if 0
     int num = 200;
         for(int i=0;i<num;i++)
@@ -190,9 +200,19 @@ void GLWidget::mouseMoveEvent(QMouseEvent *event)
     }
 
     previousMousePosition = event->pos(); //w,h
+
+    float x1=-event->pos().y()*sin(M_PI/2)+height()/2;
+    float y1 = event->pos().x()*sin(M_PI/2)+event->pos().y()*cos(M_PI/2)-width()/2;
+
+//    float point_x = x1*
+    float ox = length_g*2;
+    float oy = length_g*2*width()/height();
+    point_x_old = x1*length_g*2/height();
+    point_y_old = y1*oy/width();
+
 //    std::cout<<event->pos().x()<<": "<<event->pos().y()<<width()<<height()<<"   "<<x1<<" and "<<y1<<std::endl;
  //   std::cout<<point_x<<" : "<<point_y<<std::endl;
- //   std::cout<<x1<<" : "<<y1<<std::endl;
+    std::cout<<x1<<" 22222: "<<y1<<std::endl;
 }
 
 void GLWidget::mousePressEvent(QMouseEvent *event)
@@ -213,7 +233,12 @@ void GLWidget::mousePressEvent(QMouseEvent *event)
     float oy = length_g*2*width()/height();
     point_x = x1*length_g*2/height();
     point_y = y1*oy/width();
-    std::cout<<point_x<<" : "<<point_y<<std::endl;
+    if(bbbchecked)
+    {
+        point_x_new = point_x;
+        point_y_new = point_y;
+    }
+//    std::cout<<point_x<<" : "<<point_y<<std::endl;
 
 
     previousMousePosition = event->pos();
@@ -237,7 +262,6 @@ void GLWidget::keyPressEvent(QKeyEvent *event)
         updateGL();
         break;
     }
-
     }
 }
 
@@ -245,8 +269,7 @@ void GLWidget::wheelEvent(QWheelEvent* event)
 {
     wheeldelta = (float)event->delta();
     QPoint qpMag = event->angleDelta();
-
-        int iMag = qpMag.y();
+    int iMag = qpMag.y();
     bool bUpdate = false;
     if(iMag > 0)
     {
@@ -254,7 +277,6 @@ void GLWidget::wheelEvent(QWheelEvent* event)
         {
             m_iMag *= 1.2;
             bUpdate = true;
-
         }
     }
 
@@ -262,16 +284,13 @@ void GLWidget::wheelEvent(QWheelEvent* event)
     {
         if(m_iMag >= 1)
         {
-            m_iMag /= 2;
+            m_iMag /= 1.2;
             bUpdate = true;
         }
     }
-    if(Perspective_theta *m_iMag< 160)
-         Perspective_theta = Perspective_theta*m_iMag;
 
-//    if(bUpdate)
-//    {
-//        updateGL();
-//    }
-//    std::cout<<wheeldelta<<" hh: "<<qpMag.y()<<" mm "<<m_iMag<<std::endl;
+    if(Perspective_theta *m_iMag< 120)
+         Perspective_theta = Perspective_theta*m_iMag;
+    else
+        Perspective_theta = 120;
 }

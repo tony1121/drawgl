@@ -18,8 +18,10 @@ public:
 private:
 // /   void keyPressEvent(QKeyEvent *event) override;
 //    void resizeGL(int w, int h);
+//    void mouseMoveEvent();
 
-
+private slots:
+    void on_actionBbb_triggered(bool checked);
 
 private:
     Ui::MainWindow *ui;
