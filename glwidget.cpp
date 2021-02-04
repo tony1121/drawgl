@@ -132,6 +132,13 @@ void GLWidget::paintGL()
         {
         for(i=0;i<point_draw.size()-1;i++)
         {
+
+            glPointSize(5);
+            glBegin(GL_POINTS);
+            glColor3f( 255, 0, 0);
+            glVertex3d(point_draw.at(i).x, point_draw.at(i).y, 0.0);
+            glEnd();
+
             glBegin(GL_LINES);
             glColor3f( 0, 0, 0);
             glVertex3i(point_draw.at(i).x,point_draw.at(i).y,point_draw.at(i).z);
@@ -139,11 +146,19 @@ void GLWidget::paintGL()
             glEnd();
 
         }
+        glPointSize(5);
+        glBegin(GL_POINTS);
+        glColor3f( 255, 0, 0);
+        glVertex3d(point_draw.at(i).x, point_draw.at(i).y, 0.0);
+        glEnd();
+        if(!esc_Escape)
+        {
         glBegin(GL_LINES);
         glColor3f( 0, 0, 0);
         glVertex3i(point_draw.at(i).x,point_draw.at(i).y,point_draw.at(i).z);
         glVertex3i(point_x_old,point_y_old,0);
         glEnd();
+        }
         }
 //        glBegin(GL_LINES);
 //        glColor3f( 0, 0, 0);
@@ -262,6 +277,7 @@ void GLWidget::mousePressEvent(QMouseEvent *event)
                 point_draw.push_back(point_data);
 
     }
+    esc_Escape = 0;
 //    std::cout<<point_x<<" : "<<point_y<<std::endl;
 
 
@@ -284,6 +300,11 @@ void GLWidget::keyPressEvent(QKeyEvent *event)
             showNormal();
         }
         updateGL();
+        break;
+    }
+    case Qt::Key_Escape:
+    {
+        esc_Escape = 1;
         break;
     }
     }

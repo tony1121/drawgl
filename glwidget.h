@@ -76,6 +76,7 @@ private:
     float length_g;
     int step=0;
     std::vector<point_type_t> point_draw;
+    int esc_Escape = 0;
 
 
 
