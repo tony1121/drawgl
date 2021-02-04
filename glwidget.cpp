@@ -70,7 +70,14 @@ void GLWidget::initializeGL()
 
 void GLWidget::paintGL()
 {
+
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //glClear()函数在这里就是对initializeGL()函数
+    glMatrixMode (GL_PROJECTION);
+    glLoadIdentity ();
+    gluPerspective(Perspective_theta, (GLfloat) width()/(GLfloat) height() ,  0.01, 400000);
+
+    std::cout<<Perspective_theta<<std::endl;
+
     glClearColor(0.6, 0.6,0.8, 0.5);
     glMatrixMode(GL_MODELVIEW);                                  //中设置的颜色和缓存深度等起作用
     glLoadIdentity();//重置当前的模型观察矩阵,该句执行完后，将焦点移动到了屏幕的中心
@@ -78,12 +85,10 @@ void GLWidget::paintGL()
 
     glRotatef(90, 0, 0, 1);
 
-
-
 //    glRotatef(m_rotx, 0, 1, 0);
 //    glRotatef(m_roty, 0, 0, 1);
 
-
+    length_g = 20000*tan(M_PI/180*(Perspective_theta/2));
 
 #if 1
     glLineWidth(2);
@@ -99,6 +104,31 @@ void GLWidget::paintGL()
     glVertex3i(12000, 0, 0);
     glEnd();
 
+    int num = length_g/100;
+    for(int i=0;i<num;i++)
+    {
+          glLineWidth(1);
+          glBegin(GL_LINES);
+
+          glColor3f( 0, 0, 0);
+          glVertex3i((i-num/2)*100*2, -(num*100), 0);//单位cm
+          glVertex3i((i-num/2)*100*2, num*100, 0);//单位cm
+          glEnd();
+
+    }
+
+    for(int i=0;i<num;i++)
+    {
+        glLineWidth(1);
+        glBegin(GL_LINES);
+
+        glColor3f( 0, 0, 0);
+        glVertex3i(-num*100, (i-num/2)*100*2, 0);//单位cm
+        glVertex3i(num*100, (i-num/2)*100*2, 0);//单位cm
+        glEnd();
+
+    }
+#if 0
     int num = 200;
         for(int i=0;i<num;i++)
         {
@@ -123,7 +153,7 @@ void GLWidget::paintGL()
 
         }
 
-
+#endif
             glPointSize(5);
             glBegin(GL_POINTS);
             glColor3f( 255, 0, 0);
@@ -133,6 +163,7 @@ void GLWidget::paintGL()
 #endif
 }
 
+
 void GLWidget::resizeGL(int w, int h)
 {
 
@@ -140,7 +171,7 @@ void GLWidget::resizeGL(int w, int h)
     glMatrixMode (GL_PROJECTION);
     glLoadIdentity ();
 
-    gluPerspective(90.0, (GLfloat) w/(GLfloat) h,  0.01, 400000);
+    gluPerspective(Perspective_theta*m_iMag, (GLfloat) w/(GLfloat) h,  0.01, 400000);
     glMatrixMode(GL_MODELVIEW);	//选择模型观察矩阵
     glLoadIdentity(); // 重置模型观察矩阵
     updateGL();
@@ -157,7 +188,6 @@ void GLWidget::mouseMoveEvent(QMouseEvent *event)
         m_roty += 0.4f * dY;
         m_rotx += 0.4f * dX;
     }
-
 
     previousMousePosition = event->pos(); //w,h
 //    std::cout<<event->pos().x()<<": "<<event->pos().y()<<width()<<height()<<"   "<<x1<<" and "<<y1<<std::endl;
@@ -179,9 +209,9 @@ void GLWidget::mousePressEvent(QMouseEvent *event)
     float y1 = event->pos().x()*sin(M_PI/2)+event->pos().y()*cos(M_PI/2)-width()/2;
 
 //    float point_x = x1*
-    float ox = 40000;
-    float oy = 40000*width()/height();
-    point_x = x1*40000/height();
+    float ox = length_g*2;
+    float oy = length_g*2*width()/height();
+    point_x = x1*length_g*2/height();
     point_y = y1*oy/width();
     std::cout<<point_x<<" : "<<point_y<<std::endl;
 
@@ -213,6 +243,35 @@ void GLWidget::keyPressEvent(QKeyEvent *event)
 
 void GLWidget::wheelEvent(QWheelEvent* event)
 {
-    wheeldelta += (float)event->delta();
-    std::cout<<wheeldelta<<std::endl;
+    wheeldelta = (float)event->delta();
+    QPoint qpMag = event->angleDelta();
+
+        int iMag = qpMag.y();
+    bool bUpdate = false;
+    if(iMag > 0)
+    {
+        if(m_iMag < 8)
+        {
+            m_iMag *= 1.2;
+            bUpdate = true;
+
+        }
+    }
+
+    if(iMag < 0)
+    {
+        if(m_iMag >= 1)
+        {
+            m_iMag /= 2;
+            bUpdate = true;
+        }
+    }
+    if(Perspective_theta *m_iMag< 160)
+         Perspective_theta = Perspective_theta*m_iMag;
+
+//    if(bUpdate)
+//    {
+//        updateGL();
+//    }
+//    std::cout<<wheeldelta<<" hh: "<<qpMag.y()<<" mm "<<m_iMag<<std::endl;
 }

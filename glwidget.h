@@ -59,7 +59,9 @@ private:
     float wheeldelta = 1;
     float point_x;
     float point_y;
-
+    float Perspective_theta = 60;
+    float m_iMag = 1;
+    float length_g;
 
 
 signals:
