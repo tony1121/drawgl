@@ -21,6 +21,11 @@
 #include <iostream>
 #include <QDebug>
 
+typedef struct{
+    float x;
+    float y;
+    float z;
+}point_type_t;
 
 class GLWidget : public QGLWidget
 {
@@ -69,6 +74,8 @@ private:
     float Perspective_theta = 90;
     float m_iMag = 1;
     float length_g;
+    int step=0;
+    std::vector<point_type_t> point_draw;
 
 
 

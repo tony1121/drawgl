@@ -127,15 +127,33 @@ void GLWidget::paintGL()
 
     if(bbbchecked)
     {
+        int i;
+        if(point_draw.size()>0)
+        {
+        for(i=0;i<point_draw.size()-1;i++)
+        {
+            glBegin(GL_LINES);
+            glColor3f( 0, 0, 0);
+            glVertex3i(point_draw.at(i).x,point_draw.at(i).y,point_draw.at(i).z);
+            glVertex3i(point_draw.at(i+1).x,point_draw.at(i+1).y,point_draw.at(i+1).z);
+            glEnd();
+
+        }
         glBegin(GL_LINES);
         glColor3f( 0, 0, 0);
-        glVertex3i(point_x_new, point_y_new, 0);//单位cm
-        glVertex3i(point_x_old, point_y_old, 0);//单位cm
-
-  //      while(point_x_new == )
-        std::cout<<point_x_new<<"........."<<point_y_new<<std::endl;
-  //      glVertex3i((point_x, point_y);//单位cm
+        glVertex3i(point_draw.at(i).x,point_draw.at(i).y,point_draw.at(i).z);
+        glVertex3i(point_x_old,point_y_old,0);
         glEnd();
+        }
+//        glBegin(GL_LINES);
+//        glColor3f( 0, 0, 0);
+//        glVertex3i(point_x_new, point_y_new, 0);//单位cm
+//        glVertex3i(point_x_old, point_y_old, 0);//单位cm
+
+//  //      while(point_x_new == )
+//        std::cout<<point_x_new<<"........."<<point_y_new<<std::endl;
+//  //      glVertex3i((point_x, point_y);//单位cm
+//        glEnd();
     }
 
 #if 0
@@ -191,6 +209,7 @@ void GLWidget::resizeGL(int w, int h)
 
 void GLWidget::mouseMoveEvent(QMouseEvent *event)
 {
+    point_type_t point_data;
     float dX = event->pos().x()-previousMousePosition.x();
     float dY = event->pos().y()-previousMousePosition.y();
     if(isMouseDown)
@@ -217,6 +236,8 @@ void GLWidget::mouseMoveEvent(QMouseEvent *event)
 
 void GLWidget::mousePressEvent(QMouseEvent *event)
 {
+    point_type_t point_data;
+
     if(event->button() == Qt::LeftButton)
     {
         isMouseDown = true;
@@ -235,8 +256,11 @@ void GLWidget::mousePressEvent(QMouseEvent *event)
     point_y = y1*oy/width();
     if(bbbchecked)
     {
-        point_x_new = point_x;
-        point_y_new = point_y;
+                point_data.x = point_x;
+                point_data.y = point_y;
+                point_data.z = 0;
+                point_draw.push_back(point_data);
+
     }
 //    std::cout<<point_x<<" : "<<point_y<<std::endl;
 
