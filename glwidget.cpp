@@ -35,8 +35,6 @@ GLWidget::GLWidget(QWidget *parent) : QGLWidget(parent)
     connect(timer, SIGNAL(timeout()), this, SLOT(loop()));
     timer->stop();
 
-
-
 }
 
 void GLWidget::setupScene(QString fn)
@@ -63,10 +61,24 @@ void GLWidget::initializeGL()
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
+void glRect(int leftX,int leftY,int rightX,int rightY,int MODE){
+    //画封闭曲线
+    glBegin(MODE);
+    //左下角
+    glVertex2d(leftX,leftY);
+    //右下角
+    glVertex2d(rightX,leftY);
+    //右上角
+    glVertex2d(rightX,rightY);
+    //左上角
+    glVertex2d(leftX,rightY);
+    //结束画线
+    glEnd();
+}
+
 
 void GLWidget::paintGL()
 {
-
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //glClear()函数在这里就是对initializeGL()函数
     glMatrixMode (GL_PROJECTION);
     glLoadIdentity ();
@@ -107,7 +119,7 @@ void GLWidget::paintGL()
           glBegin(GL_LINES);
 
           glColor3f( 0, 0, 0);
-          glVertex3i((i-num/2)*100*2, -(num*100), 0);//单位cm
+          glVertex3i((i-num/2)*100*2, -(num*100), 0);//单位cm   1ge  200danwei
           glVertex3i((i-num/2)*100*2, num*100, 0);//单位cm
           glEnd();
 
@@ -124,6 +136,8 @@ void GLWidget::paintGL()
         glEnd();
 
     }
+  //     glui->statusBar->showMessage(tr("临时信息!"),2000);
+
 
     if(bbbchecked)
     {
@@ -169,8 +183,30 @@ void GLWidget::paintGL()
 //        std::cout<<point_x_new<<"........."<<point_y_new<<std::endl;
 //  //      glVertex3i((point_x, point_y);//单位cm
 //        glEnd();
-    }
+    }else
+        point_draw.clear();
 
+    if(fillchecked)
+    {
+
+        int i;
+        for(i=0;i<fill_draw.size();i++)
+        {
+
+            float x_left = ((int)fill_draw[i].x / 200)*200;
+            float x_right = ((int)fill_draw[i].x / 200 + 1)*200;
+
+            float y_up = ((int)fill_draw[i].y / 200 + 1)*200;
+            float y_down = ((int)fill_draw[i].y / 200)*200;
+
+
+
+        glColor3ub(166,166,1);
+        glRect(x_left,x_right,y_up,y_down,GL_POLYGON);
+        std::cout<<x_left<<":"<<x_right<<" : "<<y_up<<" : "<<y_down<<std::endl;
+        }
+    }else
+        fill_draw.clear();
 #if 0
     int num = 200;
         for(int i=0;i<num;i++)
@@ -190,7 +226,9 @@ void GLWidget::paintGL()
             glBegin(GL_LINES);
 
             glColor3f( 0, 0, 0);
-            glVertex3i(-num*100, (i-num/2)*100*2, 0);//单位cm
+            glVertex3i(-num*10
+
+                       0, (i-num/2)*100*2, 0);//单位cm
             glVertex3i(num*100, (i-num/2)*100*2, 0);//单位cm
             glEnd();
 
@@ -201,9 +239,11 @@ void GLWidget::paintGL()
             glBegin(GL_POINTS);
             glColor3f( 255, 0, 0);
             glVertex3d(point_x, point_y, 0.0);
-
             glEnd();
 #endif
+
+            glColor3ub(166,166,1);
+            glRect(0,0,200,200,GL_POLYGON);
 }
 
 
@@ -246,7 +286,7 @@ void GLWidget::mouseMoveEvent(QMouseEvent *event)
 
 //    std::cout<<event->pos().x()<<": "<<event->pos().y()<<width()<<height()<<"   "<<x1<<" and "<<y1<<std::endl;
  //   std::cout<<point_x<<" : "<<point_y<<std::endl;
-    std::cout<<x1<<" 22222: "<<y1<<std::endl;
+//    std::cout<<x1<<" 22222: "<<y1<<std::endl;
 }
 
 void GLWidget::mousePressEvent(QMouseEvent *event)
@@ -278,6 +318,15 @@ void GLWidget::mousePressEvent(QMouseEvent *event)
 
     }
     esc_Escape = 0;
+
+    if(fillchecked)
+    {
+                fill_point_data.x = point_x;
+                fill_point_data.y = point_y;
+                fill_point_data.z = 0;
+                fill_draw.push_back(fill_point_data);
+    }
+
 //    std::cout<<point_x<<" : "<<point_y<<std::endl;
 
 

@@ -21,6 +21,7 @@
 #include <iostream>
 #include <QDebug>
 
+
 typedef struct{
     float x;
     float y;
@@ -35,6 +36,14 @@ public:
 
 public:
     bool bbbchecked = false;
+    bool fillchecked = false;
+    float point_x;
+    float point_y;
+
+//    Ui::MainWindow *glui;
+//    MainWidow *widow;
+
+
 
 protected:
     void initializeGL();
@@ -65,8 +74,7 @@ private:
     float m_roty = 0; //0.001
     bool mFullScreen=0;
     float wheeldelta = 1;
-    float point_x;
-    float point_y;
+
     float point_x_old = 0;
     float point_y_old = 0;
     float point_x_new = 0;
@@ -76,9 +84,10 @@ private:
     float length_g;
     int step=0;
     std::vector<point_type_t> point_draw;
+    std::vector<point_type_t> fill_draw;
+
+    point_type_t fill_point_data;
     int esc_Escape = 0;
-
-
 
 signals:
     void emitClose();
