@@ -190,20 +190,33 @@ void GLWidget::paintGL()
     {
 
         int i;
+        float x_down,x_up,y_right,y_left;
         for(i=0;i<fill_draw.size();i++)
         {
 
-            float x_left = ((int)fill_draw[i].x / 200)*200;
-            float x_right = ((int)fill_draw[i].x / 200 + 1)*200;
-
-            float y_up = ((int)fill_draw[i].y / 200 + 1)*200;
-            float y_down = ((int)fill_draw[i].y / 200)*200;
-
+            if(fill_draw[i].x >= 0)
+            {
+                x_down = ((int)fill_draw[i].x / 200)*200;
+                x_up = ((int)fill_draw[i].x / 200 + 1)*200;
+            }else
+            {
+                x_down = ((int)fill_draw[i].x / 200-1)*200;
+                x_up = ((int)fill_draw[i].x / 200 )*200;
+            }
+            if(fill_draw[i].y >= 0)
+            {
+                y_right = ((int)fill_draw[i].y / 200 + 1)*200;
+                y_left = ((int)fill_draw[i].y / 200)*200;
+            }else
+            {
+                y_right = ((int)fill_draw[i].y / 200)*200;
+                y_left = ((int)fill_draw[i].y / 200 - 1)*200;
+            }
 
 
         glColor3ub(166,166,1);
-        glRect(x_left,x_right,y_up,y_down,GL_POLYGON);
-        std::cout<<x_left<<":"<<x_right<<" : "<<y_up<<" : "<<y_down<<std::endl;
+        glRect(x_down,y_right,x_up,y_left,GL_POLYGON);
+  //      std::cout<<x_left<<":"<<x_right<<" : "<<y_up<<" : "<<y_down<<std::endl;
         }
     }else
         fill_draw.clear();
