@@ -2,42 +2,53 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QLabel>
 
-namespace Ui {
-class MainWindow;
-}
+class QAction;
+class QLabel;
+class QMenu;
+class QSlider;
+class QScrollArea;
+
+class GLWidget;
 
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = 0);
+    MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
-private:
-// /   void keyPressEvent(QKeyEvent *event) override;
-//    void resizeGL(int w, int h);
-//    void mouseMoveEvent();
-
-private slots:
-    void on_actionBbb_triggered(bool checked);
-
-
-    void on_actionClose_triggered(bool checked);
-
-private:
-    Ui::MainWindow *ui;
-    QString filename;
-    bool mFullScreen;
-        QTimer *tim;
-
-public slots:
-        void onTimeOut();
 public:
-        QLabel  *m_statusLabel;
-        QLabel  *m_statusLabel2;
+    void createActions();
+    void createMenus();
+    void createToolsBar();
+
+
+private:
+    QStatusBar *statusbar;
+    QLabel *pixmapLabel;
+    GLWidget *glWidget;
+    QWidget *centralWidget;
+    QScrollArea *glWidgetArea;
+    QLabel  *m_statusLabel;
+
+    QSlider *xSlider;
+    QSlider *ySlider;
+    QSlider *zSlider;
+
+    QAction *zoom_in;
+    QAction *zoom_out;
+
+    QAction *caoche;
+
+
+    QMenu *fileMenu;
+    QToolBar *editToolBar;
+    QTabWidget *select_interface;
+
+
+
 };
 
 #endif // MAINWINDOW_H

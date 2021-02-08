@@ -1,94 +1,129 @@
+#include <QtOpenGL>
+#include <QAction>
+#include <QLabel>
+#include <QMenu>
+#include <QSlider>
+#include <QScrollArea>
+#include <QMenuBar>
+#include <QApplication>
 #include "mainwindow.h"
-#include "ui_mainwindow.h"
+#include "glwidget.h"
 
-MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::MainWindow)
+MainWindow::MainWindow(QWidget *parent)
+    : QMainWindow(parent)
 {
-    ui->setupUi(this);
-    showNormal();
+    centralWidget = new QWidget;
 
+
+
+    setCentralWidget(centralWidget);
+
+    glWidget = new GLWidget;
+
+
+    select_interface = new QTabWidget;
+ //   select_interface->setParent(centralWidget);
+
+    //gl
+    glWidgetArea = new QScrollArea;
+    glWidgetArea->setWidget(glWidget);
+    glWidgetArea->setWidgetResizable(true);
+    glWidgetArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    glWidgetArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    glWidgetArea->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+    glWidgetArea->setMinimumSize(100, 100);
+
+
+
+    //slider
+    QSlider *slider = new QSlider(Qt::Horizontal);
+    slider->setRange(0, 16 * 250);
+    slider->setSingleStep(30);
+    slider->setPageStep(15 * 16);
+    slider->setTickInterval(15 * 16);
+    slider->setTickPosition(QSlider::TicksLeft);
+#if 0
+    //widget
+    QGridLayout *centralLayout = new QGridLayout;
+    centralLayout->addWidget(glWidgetArea, 0, 1);  //waiceng
+
+    centralLayout->addWidget(slider,1,1,1,1);
+    centralWidget->setLayout(centralLayout);
+#endif
+
+    //status label
     m_statusLabel = new QLabel;
-
     QPalette pe;
     pe.setColor(QPalette::WindowText,Qt::green);
     m_statusLabel->setPalette(pe);
+    m_statusLabel->resize(100, 100);
+    m_statusLabel->setGeometry(0,133,300,280);
+    statusBar()->addPermanentWidget(m_statusLabel);
 
-//    m_statusLabel->setContentsMargins(300,0,100,0);
-     m_statusLabel->resize(100, 100);
-     m_statusLabel->setGeometry(0,133,300,280);
-
-     ui->statusBar->addPermanentWidget(m_statusLabel);
-     ui->statusBar->setSizeIncrement(1000,100);
-
-
-     m_statusLabel2 = new QLabel;
-      m_statusLabel2->resize(0, 100);
-  //    m_statusLabel2->colorCount();
-      ui->statusBar->addWidget(m_statusLabel2,1);
+    QString data = QString("x is y is");
+    m_statusLabel->setText(data);
 
 
-    filename = "../IV_Fusion_Platoon/init/tc.obj";
+    createActions();
 
-    ui->widget->setupScene(filename);
-    connect(ui->widget, SIGNAL(emitClose()), this, SLOT(close()));
+    createMenus();
 
-    tim = new QTimer();
+    createToolsBar();
 
-    tim->setInterval(1000);
 
-    connect(tim,SIGNAL(timeout()),this,SLOT(onTimeOut()));
+    select_interface->addTab(glWidgetArea,tr("&tab1"));
+    select_interface->addTab(slider,tr("&tab2"));
 
-    tim->start();
-//    ui->statusBar->showMessage(tr("临时信息!"),2000);
+    QGridLayout *centralLayout = new QGridLayout;
+
+    centralLayout->addWidget(select_interface, 2, 1);  //waiceng
+
+    centralWidget->setLayout(centralLayout);
+//    createToolsBar();
+
+    select_interface->setTabPosition(QTabWidget::West);//将tabBar的位置放在左边
+    select_interface->show();
+
+
+
+
+    //title
+    setWindowTitle(tr("Grabeer"));
+
+
+}
+
+void MainWindow::createActions()
+{
+    zoom_in  = new QAction(tr("zoom &in"), this);
+    zoom_out  = new QAction(tr("zoom &out"), this);
+
+
+    caoche  = new QAction(QIcon("/home/rd/glgl/ico/uvd.png"),tr("&File"),this);
+
+
+}
+
+void MainWindow::createMenus()
+{
+    fileMenu = menuBar()->addMenu(tr("&File"));
+    fileMenu->addAction(zoom_in);
+
+  //  fileMenu->addSeparator();
+
+
+    fileMenu->addAction(zoom_out);
+
+}
+
+void MainWindow::createToolsBar()
+{
+    editToolBar = addToolBar(tr("cao"));
+    editToolBar->addAction(caoche);
+
 }
 
 MainWindow::~MainWindow()
 {
-    delete ui;
-}
 
-
-//void MainWindow::resizeGL(int w, int h)
-//{
-
-//}
-
-void MainWindow::onTimeOut()
-{
-//    ui->statusBar->setStyleSheet("color:green");
-    QString data = QString("x is %1,y is %2").arg(ui->widget->point_x).arg(ui->widget->point_y);
-//    ui->statusBar->showMessage(data,2000);
-
-    m_statusLabel->setText(data);
-    QString data1 = QString("x is %1,y is %2").arg(rect().x()).arg(rect().y());
-
-    m_statusLabel2->setText(data1);
-}
-
-void MainWindow::on_actionBbb_triggered(bool checked)
-{
- //   std::cout<<"funck"<<std::endl;
-    if(checked)
-        ui->widget->fillchecked = true;
-    else
-    {
-        ui->widget->fillchecked = false;
-    }
-}
-
-
-//void MainWindow::mouseMoveEvent()
-//{
-//       std::cout<<"lllll"<<std::endl;
-//}
-
-void MainWindow::on_actionClose_triggered(bool checked)
-{
-    if(checked)
-        ui->widget->bbbchecked = true;
-    else
-    {
-        ui->widget->bbbchecked = false;
-    }
 }
