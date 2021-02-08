@@ -1,0 +1,60 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+GLWIDGET_H	glwidget.h	2;"	d
+GLWidget	glwidget.cpp	/^GLWidget::GLWidget(QWidget *parent) :$/;"	f	class:GLWidget
+GLWidget	glwidget.h	/^class GLWidget : public QGLWidget$/;"	c
+MAINWINDOW_H	mainwindow.h	2;"	d
+MainWindow	mainwindow.cpp	/^MainWindow::MainWindow(QWidget *parent)$/;"	f	class:MainWindow
+MainWindow	mainwindow.h	/^class MainWindow : public QMainWindow$/;"	c
+about	mainwindow.cpp	/^void MainWindow::about()$/;"	f	class:MainWindow
+aboutAction	mainwindow.h	/^    QAction *aboutAction;$/;"	m	class:MainWindow
+aboutQtAction	mainwindow.h	/^    QAction *aboutQtAction;$/;"	m	class:MainWindow
+alwaysRotate	glwidget.cpp	/^void GLWidget::alwaysRotate()$/;"	f	class:GLWidget
+centralWidget	mainwindow.h	/^    QWidget *centralWidget;$/;"	m	class:MainWindow
+clearPixmap	mainwindow.cpp	/^void MainWindow::clearPixmap()$/;"	f	class:MainWindow
+clearPixmapAction	mainwindow.h	/^    QAction *clearPixmapAction;$/;"	m	class:MainWindow
+createActions	mainwindow.cpp	/^void MainWindow::createActions()$/;"	f	class:MainWindow
+createMenus	mainwindow.cpp	/^void MainWindow::createMenus()$/;"	f	class:MainWindow
+createSlider	mainwindow.cpp	/^QSlider *MainWindow::createSlider(const char *changedSignal,$/;"	f	class:MainWindow
+drawTriangle	glwidget.cpp	/^void GLWidget::drawTriangle()$/;"	f	class:GLWidget
+exitAction	mainwindow.h	/^    QAction *exitAction;$/;"	m	class:MainWindow
+faceColors	glwidget.h	/^    QColor faceColors[4];$/;"	m	class:GLWidget
+fileMenu	mainwindow.h	/^    QMenu *fileMenu;$/;"	m	class:MainWindow
+getSize	mainwindow.cpp	/^QSize MainWindow::getSize()$/;"	f	class:MainWindow
+glWidget	mainwindow.h	/^    GLWidget *glWidget;$/;"	m	class:MainWindow
+glWidgetArea	mainwindow.h	/^    QScrollArea *glWidgetArea;$/;"	m	class:MainWindow
+grabFrameBuffer	mainwindow.cpp	/^void MainWindow::grabFrameBuffer()$/;"	f	class:MainWindow
+grabFrameBufferAction	mainwindow.h	/^    QAction *grabFrameBufferAction;$/;"	m	class:MainWindow
+helpMenu	mainwindow.h	/^    QMenu *helpMenu;$/;"	m	class:MainWindow
+initializeGL	glwidget.cpp	/^void GLWidget::initializeGL()$/;"	f	class:GLWidget
+lastPos	glwidget.h	/^    QPoint lastPos;$/;"	m	class:GLWidget
+main	main.cpp	/^int main(int argc, char *argv[])$/;"	f
+mouseMoveEvent	glwidget.cpp	/^void GLWidget::mouseMoveEvent(QMouseEvent *event)$/;"	f	class:GLWidget
+mousePressEvent	glwidget.cpp	/^void GLWidget::mousePressEvent(QMouseEvent *event)$/;"	f	class:GLWidget
+normalizeAngle	glwidget.cpp	/^void GLWidget::normalizeAngle(int *angle)$/;"	f	class:GLWidget
+paintGL	glwidget.cpp	/^void GLWidget::paintGL()$/;"	f	class:GLWidget
+pixmapLabel	mainwindow.h	/^    QLabel *pixmapLabel;$/;"	m	class:MainWindow
+pixmapLabel1	mainwindow.h	/^    QLabel *pixmapLabel1;$/;"	m	class:MainWindow
+pixmapLabelArea	mainwindow.h	/^    QScrollArea *pixmapLabelArea;$/;"	m	class:MainWindow
+pixmapLabelArea1	mainwindow.h	/^    QScrollArea *pixmapLabelArea1;$/;"	m	class:MainWindow
+renderIntoPixmap	mainwindow.cpp	/^void MainWindow::renderIntoPixmap()$/;"	f	class:MainWindow
+renderIntoPixmapAction	mainwindow.h	/^    QAction *renderIntoPixmapAction;$/;"	m	class:MainWindow
+resizeGL	glwidget.cpp	/^void GLWidget::resizeGL(int w, int h)$/;"	f	class:GLWidget
+setPixmap	mainwindow.cpp	/^void MainWindow::setPixmap(const QPixmap &pixmap)$/;"	f	class:MainWindow
+setXRotation	glwidget.cpp	/^void GLWidget::setXRotation(int angle)$/;"	f	class:GLWidget
+setYRotation	glwidget.cpp	/^void GLWidget::setYRotation(int angle)$/;"	f	class:GLWidget
+setZRotation	glwidget.cpp	/^void GLWidget::setZRotation(int angle)$/;"	f	class:GLWidget
+xRot	glwidget.h	/^    int xRot;$/;"	m	class:GLWidget
+xRotation	glwidget.h	/^    int xRotation() const { return xRot; }$/;"	f	class:GLWidget
+xSlider	mainwindow.h	/^    QSlider *xSlider;$/;"	m	class:MainWindow
+yRot	glwidget.h	/^    int yRot;$/;"	m	class:GLWidget
+yRotation	glwidget.h	/^    int yRotation() const { return yRot; }$/;"	f	class:GLWidget
+ySlider	mainwindow.h	/^    QSlider *ySlider;$/;"	m	class:MainWindow
+zRot	glwidget.h	/^    int zRot;$/;"	m	class:GLWidget
+zRotation	glwidget.h	/^    int zRotation() const { return zRot; }$/;"	f	class:GLWidget
+zSlider	mainwindow.h	/^    QSlider *zSlider;$/;"	m	class:MainWindow
+~MainWindow	mainwindow.cpp	/^MainWindow::~MainWindow()$/;"	f	class:MainWindow

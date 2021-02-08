@@ -1,403 +1,150 @@
-#include "glwidget.h"
-#include <QGLWidget>
-
-#include <GL/glu.h>
-#include <math.h>
-
+#include <QtGui>
+#include <QtOpenGL>
 #include <iostream>
 
-using namespace std;
+#include <math.h>
 
+#include "glwidget.h"
 
-// 窗口大小变化回调函数
-void reshape(int w, int h) {
-    glViewport(0, 0, w, h);
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    gluPerspective(100.0, (GLfloat)w/(GLfloat)h, 0.1, 100000.0);
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-    gluLookAt(0, 0, 10000, 0, 0, 0, 0, 1, 0);
-    std::cout<<"w: "<<w<<" h: "<<h<<std::endl;
-}
-
-GLWidget::GLWidget(QWidget *parent) : QGLWidget(parent)
+GLWidget::GLWidget(QWidget *parent) :
+    QGLWidget(parent)
 {
-    showNormal();
+    xRot = 0;
+    yRot = 0;
+    zRot = 0;
 
-//    glutInitWindowSize(100, 100);
-    setFocusPolicy(Qt::ClickFocus);   //
-    setMouseTracking(true);     //
-//    glutReshapeFunc(reshape);
+    faceColors[0] = Qt::red;
+    faceColors[1] = Qt::green;
+    faceColors[2] = Qt::blue;
+    faceColors[3] = Qt::yellow;
 
-    timer = new QTimer(this);
-    timer->setInterval(15);
-    connect(timer, SIGNAL(timeout()), this, SLOT(loop()));
-    timer->stop();
-
+    QTimer *timer = new QTimer(this);
+    connect(timer, SIGNAL(timeout()), this, SLOT(alwaysRotate()));
+    timer->start(70);
 }
-
-void GLWidget::setupScene(QString fn)
-{
-    // Set the filename and start the timer
-    fileName = fn;
-    timer->start();
-
-}
-
-void GLWidget::loop()
-{
-    // Nothing to do here, just redraw
-    updateGL();
-}
-
 
 void GLWidget::initializeGL()
 {
-    glShadeModel(GL_SMOOTH); // 启用阴影平滑
-    glClearColor(0.0f, 1.0f, 0.0f, 0.5f); // 蓝色背景
-    glClearDepth(1.0f);	// 设置深度缓存
-    glEnable(GL_BLEND); // 启用深度测试
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glClearColor(0.0, 0.2, 0.3, 1.0);
+    glShadeModel(GL_SMOOTH);
+    glEnable(GL_DEPTH);
 }
-
-void glRect(int leftX,int leftY,int rightX,int rightY,int MODE){
-    //画封闭曲线
-    glBegin(MODE);
-    //左下角
-    glVertex2d(leftX,leftY);
-    //右下角
-    glVertex2d(rightX,leftY);
-    //右上角
-    glVertex2d(rightX,rightY);
-    //左上角
-    glVertex2d(leftX,rightY);
-    //结束画线
-    glEnd();
-}
-
 
 void GLWidget::paintGL()
 {
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //glClear()函数在这里就是对initializeGL()函数
-    glMatrixMode (GL_PROJECTION);
-    glLoadIdentity ();
-    gluPerspective(Perspective_theta, (GLfloat) width()/(GLfloat) height() ,  0.01, 400000);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
- //   std::cout<<Perspective_theta<<std::endl;
-
-    glClearColor(0.6, 0.6,0.8, 0.5);
-    glMatrixMode(GL_MODELVIEW);                                  //中设置的颜色和缓存深度等起作用
-    glLoadIdentity();//重置当前的模型观察矩阵,该句执行完后，将焦点移动到了屏幕的中心
-    gluLookAt(0, 0, -20000, 0, 0, 0, 0, 1, 0);
-
-    glRotatef(90, 0, 0, 1);
-
-//    glRotatef(m_rotx, 0, 1, 0);
-//    glRotatef(m_roty, 0, 0, 1);
-
-    length_g = 20000*tan(M_PI/180*(Perspective_theta/2));
-
-#if 1
-    glLineWidth(2);
-    glBegin(GL_LINES);
-    glColor3f( 255, 0, 0);  //dark red x axis
-    glVertex3i(0, 0, 0);//单位cm
-    glVertex3i(4000, 0, 0);
-    glColor3f( 0, 255, 0);  //dark red x axis
-    glVertex3i(4000, 0, 0);//单位cm
-    glVertex3i(8000, 0, 0);
-    glColor3f(0, 0, 255);  //dark red x axis
-    glVertex3i(8000, 0, 0);//单位cm
-    glVertex3i(12000, 0, 0);
-    glEnd();
-
-    int num = length_g/100;
-    for(int i=0;i<num;i++)
-    {
-          glLineWidth(1);
-          glBegin(GL_LINES);
-
-          glColor3f( 0, 0, 0);
-          glVertex3i((i-num/2)*100*2, -(num*100), 0);//单位cm   1ge  200danwei
-          glVertex3i((i-num/2)*100*2, num*100, 0);//单位cm
-          glEnd();
-
-    }
-
-    for(int i=0;i<num;i++)
-    {
-        glLineWidth(1);
-        glBegin(GL_LINES);
-
-        glColor3f( 0, 0, 0);
-        glVertex3i(-num*100, (i-num/2)*100*2, 0);//单位cm
-        glVertex3i(num*100, (i-num/2)*100*2, 0);//单位cm
-        glEnd();
-
-    }
-  //     glui->statusBar->showMessage(tr("临时信息!"),2000);
-
-
-    if(bbbchecked)
-    {
-        int i;
-        if(point_draw.size()>0)
-        {
-        for(i=0;i<point_draw.size()-1;i++)
-        {
-
-            glPointSize(5);
-            glBegin(GL_POINTS);
-            glColor3f( 255, 0, 0);
-            glVertex3d(point_draw.at(i).x, point_draw.at(i).y, 0.0);
-            glEnd();
-
-            glBegin(GL_LINES);
-            glColor3f( 0, 0, 0);
-            glVertex3i(point_draw.at(i).x,point_draw.at(i).y,point_draw.at(i).z);
-            glVertex3i(point_draw.at(i+1).x,point_draw.at(i+1).y,point_draw.at(i+1).z);
-            glEnd();
-
-        }
-        glPointSize(5);
-        glBegin(GL_POINTS);
-        glColor3f( 255, 0, 0);
-        glVertex3d(point_draw.at(i).x, point_draw.at(i).y, 0.0);
-        glEnd();
-        if(!esc_Escape)
-        {
-        glBegin(GL_LINES);
-        glColor3f( 0, 0, 0);
-        glVertex3i(point_draw.at(i).x,point_draw.at(i).y,point_draw.at(i).z);
-        glVertex3i(point_x_old,point_y_old,0);
-        glEnd();
-        }
-        }
-//        glBegin(GL_LINES);
-//        glColor3f( 0, 0, 0);
-//        glVertex3i(point_x_new, point_y_new, 0);//单位cm
-//        glVertex3i(point_x_old, point_y_old, 0);//单位cm
-
-//  //      while(point_x_new == )
-//        std::cout<<point_x_new<<"........."<<point_y_new<<std::endl;
-//  //      glVertex3i((point_x, point_y);//单位cm
-//        glEnd();
-    }else
-        point_draw.clear();
-
-    if(fillchecked)
-    {
-
-        int i;
-        float x_down,x_up,y_right,y_left;
-        for(i=0;i<fill_draw.size();i++)
-        {
-
-            if(fill_draw[i].x >= 0)
-            {
-                x_down = ((int)fill_draw[i].x / 200)*200;
-                x_up = ((int)fill_draw[i].x / 200 + 1)*200;
-            }else
-            {
-                x_down = ((int)fill_draw[i].x / 200-1)*200;
-                x_up = ((int)fill_draw[i].x / 200 )*200;
-            }
-            if(fill_draw[i].y >= 0)
-            {
-                y_right = ((int)fill_draw[i].y / 200 + 1)*200;
-                y_left = ((int)fill_draw[i].y / 200)*200;
-            }else
-            {
-                y_right = ((int)fill_draw[i].y / 200)*200;
-                y_left = ((int)fill_draw[i].y / 200 - 1)*200;
-            }
-
-
-        glColor3ub(166,166,1);
-        glRect(x_down,y_right,x_up,y_left,GL_POLYGON);
-  //      std::cout<<x_left<<":"<<x_right<<" : "<<y_up<<" : "<<y_down<<std::endl;
-        }
-    }else
-        fill_draw.clear();
-#if 0
-    int num = 200;
-        for(int i=0;i<num;i++)
-        {
-              glLineWidth(1);
-              glBegin(GL_LINES);
-
-              glColor3f( 0, 0, 0);
-              glVertex3i((i-num/2)*100*2, -(num*100), 0);//单位cm
-              glVertex3i((i-num/2)*100*2, num*100, 0);//单位cm
-              glEnd();
-
-        }
-        for(int i=0;i<num;i++)
-        {
-            glLineWidth(1);
-            glBegin(GL_LINES);
-
-            glColor3f( 0, 0, 0);
-            glVertex3i(-num*10
-
-                       0, (i-num/2)*100*2, 0);//单位cm
-            glVertex3i(num*100, (i-num/2)*100*2, 0);//单位cm
-            glEnd();
-
-        }
-
-#endif
-            glPointSize(5);
-            glBegin(GL_POINTS);
-            glColor3f( 255, 0, 0);
-            glVertex3d(point_x, point_y, 0.0);
-            glEnd();
-#endif
-
-            glColor3ub(166,166,1);
-            glRect(0,0,200,200,GL_POLYGON);
+    glPushMatrix();
+    drawTriangle();
+    glPopMatrix();
 }
-
 
 void GLWidget::resizeGL(int w, int h)
 {
+    int side = qMin(w, h);
+    glViewport((width() - side) / 2, (height() - side) / 2, side, side);
 
-    glViewport (0, 0, (GLsizei) w, (GLsizei) h);
-    glMatrixMode (GL_PROJECTION);
-    glLoadIdentity ();
-
-    gluPerspective(Perspective_theta*m_iMag, (GLfloat) w/(GLfloat) h,  0.01, 400000);
-    glMatrixMode(GL_MODELVIEW);	//选择模型观察矩阵
-    glLoadIdentity(); // 重置模型观察矩阵
-    updateGL();
-//    std::cout<<"11w: "<<w<<"h: "<<h<<std::endl;
-
-}
-
-void GLWidget::mouseMoveEvent(QMouseEvent *event)
-{
-    point_type_t point_data;
-    float dX = event->pos().x()-previousMousePosition.x();
-    float dY = event->pos().y()-previousMousePosition.y();
-    if(isMouseDown)
-    {
-        m_roty += 0.4f * dY;
-        m_rotx += 0.4f * dX;
-    }
-
-    previousMousePosition = event->pos(); //w,h
-
-    float x1=-event->pos().y()*sin(M_PI/2)+height()/2;
-    float y1 = event->pos().x()*sin(M_PI/2)+event->pos().y()*cos(M_PI/2)-width()/2;
-
-//    float point_x = x1*
-    float ox = length_g*2;
-    float oy = length_g*2*width()/height();
-    point_x_old = x1*length_g*2/height();
-    point_y_old = y1*oy/width();
-
-//    std::cout<<event->pos().x()<<": "<<event->pos().y()<<width()<<height()<<"   "<<x1<<" and "<<y1<<std::endl;
- //   std::cout<<point_x<<" : "<<point_y<<std::endl;
-//    std::cout<<x1<<" 22222: "<<y1<<std::endl;
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glFrustum(-1.2, 1.2, -1.2, 1.2, 5.0, 60.0);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    glTranslatef(0.0, 0.0, -40.0);
+    std::cout<<" resize "<<std::endl;
 }
 
 void GLWidget::mousePressEvent(QMouseEvent *event)
 {
-    point_type_t point_data;
-
-    if(event->button() == Qt::LeftButton)
-    {
-        isMouseDown = true;
-    }
-    if(event->button() == Qt::RightButton)
-    {
-        RightButtonIsMouseDown=true;
-    }
-    float x1=-event->pos().y()*sin(M_PI/2)+height()/2;
-    float y1 = event->pos().x()*sin(M_PI/2)+event->pos().y()*cos(M_PI/2)-width()/2;
-
-//    float point_x = x1*
-    float ox = length_g*2;
-    float oy = length_g*2*width()/height();
-    point_x = x1*length_g*2/height();
-    point_y = y1*oy/width();
-    if(bbbchecked)
-    {
-                point_data.x = point_x;
-                point_data.y = point_y;
-                point_data.z = 0;
-                point_draw.push_back(point_data);
-
-    }
-    esc_Escape = 0;
-
-    if(fillchecked)
-    {
-                fill_point_data.x = point_x;
-                fill_point_data.y = point_y;
-                fill_point_data.z = 0;
-                fill_draw.push_back(fill_point_data);
-    }
-
-//    std::cout<<point_x<<" : "<<point_y<<std::endl;
-
-
-    previousMousePosition = event->pos();
-    update();
+    lastPos = event->pos();
 }
 
-void GLWidget::keyPressEvent(QKeyEvent *event)
+void GLWidget::mouseMoveEvent(QMouseEvent *event)
 {
-    switch(event->key())
-    {
-    case Qt::Key_F2:
-    {
-  //      std::cout<<"key press"<<std::endl;
-        mFullScreen = !mFullScreen;
-        if(mFullScreen) {
-            showFullScreen();
+    int dx = event->x() - lastPos.x();
+    int dy = event->y() - lastPos.y();
+
+    if (event->buttons() & Qt::LeftButton) {
+        (xRot + 4 * dx);
+        setYRotation(yRot + 4 * dy);
+    } else if (event->buttons() & Qt::RightButton) {
+        (xRot + 4 * dy);
+        setZRotation(zRot + 4 * dx);
+    }
+
+    lastPos = event->pos();
+}
+
+void GLWidget::drawTriangle()
+{
+    static const GLfloat P1[3] = { 0.0, -1.0, +2.0 };
+    static const GLfloat P2[3] = { +1.73205081, -1.0, -1.0 };
+    static const GLfloat P3[3] = { -1.73205081, -1.0, -1.0 };
+    static const GLfloat P4[3] = { 0.0, +2.0, 0.0 };
+
+    static const GLfloat * const coords[4][3] = {
+        { P1, P2, P3 }, { P1, P3, P4 }, { P1, P4, P2 }, { P2, P4, P3 }
+    };
+
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    glTranslatef(0.0, 0.0, -10.0);
+    glRotatef(xRot, 1.0, 0.0, 0.0);
+    glRotatef(yRot, 0.0, 1.0, 0.0);
+    glRotatef(zRot, 0.0, 0.0, 1.0);
+
+    for (int i = 0; i != 4; ++i) {
+        //glLoadName(i);
+        glBegin(GL_TRIANGLES);
+        qglColor(faceColors[i]);
+        for (int j = 0; j < 3; ++j) {
+            glVertex3f(coords[i][j][0], coords[i][j][1],
+                       coords[i][j][2]);
         }
-        else {
-            showNormal();
-        }
+        glEnd();
+    }
+}
+
+void GLWidget::normalizeAngle(int *angle)
+{
+    while (*angle < 0)
+        angle += 360 * 16;
+    while (*angle > 360 *16)
+        angle -= 360 *16;
+}
+
+void GLWidget::setXRotation(int angle)
+{
+    normalizeAngle(&angle);
+    if ( angle != xRot ) {
+        xRot = angle;
+        emit xRotationChanged(angle);
         updateGL();
-        break;
-    }
-    case Qt::Key_Escape:
-    {
-        esc_Escape = 1;
-        break;
-    }
     }
 }
 
-void GLWidget::wheelEvent(QWheelEvent* event)
+void GLWidget::setYRotation(int angle)
 {
-    wheeldelta = (float)event->delta();
-    QPoint qpMag = event->angleDelta();
-    int iMag = qpMag.y();
-    bool bUpdate = false;
-    if(iMag > 0)
-    {
-        if(m_iMag < 8)
-        {
-            m_iMag *= 1.2;
-            bUpdate = true;
-        }
+    normalizeAngle(&angle);
+    if ( angle != yRot ) {
+        yRot = angle;
+        emit yRotationChanged(angle);
+        updateGL();
     }
+}
 
-    if(iMag < 0)
-    {
-        if(m_iMag >= 1)
-        {
-            m_iMag /= 1.2;
-            bUpdate = true;
-        }
+void GLWidget::setZRotation(int angle)
+{
+    normalizeAngle(&angle);
+    if ( angle != zRot ) {
+        zRot = angle;
+        emit zRotationChanged(angle);
+        updateGL();
     }
+}
 
-    if(Perspective_theta *m_iMag< 120)
-         Perspective_theta = Perspective_theta*m_iMag;
-    else
-        Perspective_theta = 120;
+void GLWidget::alwaysRotate()
+{
+    zRot += 2;
+    emit zRotationChanged(zRot);
+    updateGL();
 }

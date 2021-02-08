@@ -19,35 +19,41 @@ public:
     MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
-public:
-    void createActions();
-    void createMenus();
-    void createToolsBar();
-
+private slots:
+    void renderIntoPixmap();
+    void grabFrameBuffer();
+    void clearPixmap();
+    void about();
 
 private:
-    QStatusBar *statusbar;
-    QLabel *pixmapLabel;
-    GLWidget *glWidget;
+
+    void createMenus();
+    void createActions();
+
+    QSlider *createSlider(const char *changedSignal, const char *setterSlot);
+    void setPixmap(const QPixmap &pixmap);
+    QSize getSize();
+
     QWidget *centralWidget;
     QScrollArea *glWidgetArea;
-    QLabel  *m_statusLabel;
+    QScrollArea *pixmapLabelArea;
+    QScrollArea *pixmapLabelArea1;
 
+    GLWidget *glWidget;
+    QLabel *pixmapLabel;
+    QLabel *pixmapLabel1;
     QSlider *xSlider;
     QSlider *ySlider;
     QSlider *zSlider;
 
-    QAction *zoom_in;
-    QAction *zoom_out;
-
-    QAction *caoche;
-
-
     QMenu *fileMenu;
-    QToolBar *editToolBar;
-    QTabWidget *select_interface;
-
-
+    QMenu *helpMenu;
+    QAction *renderIntoPixmapAction;
+    QAction *grabFrameBufferAction;
+    QAction *clearPixmapAction;
+    QAction *exitAction;
+    QAction *aboutAction;
+    QAction *aboutQtAction;
 
 };
 
