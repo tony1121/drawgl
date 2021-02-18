@@ -18,9 +18,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     glWidget = new GLWidget;
 
-
     select_interface = new QTabWidget;
- //   select_interface->setParent(centralWidget);
+ // select_interface->setParent(centralWidget);
 
     //gl
     glWidgetArea = new QScrollArea;
@@ -31,9 +30,7 @@ MainWindow::MainWindow(QWidget *parent)
     glWidgetArea->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
     glWidgetArea->setMinimumSize(100, 100);
 
-
-
-    //slider huakuai
+    //slider 滑块
     QSlider *slider = new QSlider(Qt::Horizontal);
     slider->setRange(0, 16 * 250);
     slider->setSingleStep(30);
@@ -62,20 +59,18 @@ MainWindow::MainWindow(QWidget *parent)
     QString data = QString("x is y is");
     m_statusLabel->setText(data);
 
-
     createActions();
 
     createMenus();
 
     createToolsBar();
 
-
     select_interface->addTab(glWidgetArea,tr("&tab1"));
     select_interface->addTab(slider,tr("&tab2"));
 
     QGridLayout *centralLayout = new QGridLayout;
 
-    centralLayout->addWidget(select_interface, 2, 1);  //waiceng
+    centralLayout->addWidget(select_interface, 2, 1);  //外层
 
     centralWidget->setLayout(centralLayout);
 //    createToolsBar();
@@ -86,17 +81,20 @@ MainWindow::MainWindow(QWidget *parent)
     //title
 //    setWindowTitle(tr("Grabeer"));
   //  setWindowIcon(QIcon("/home/rd/glgl/uvd.png"));
+
+
+
+    timer1 = new QTimer(this);
+    timer1->setInterval(15);
+    connect(timer1, SIGNAL(timeout()), this, SLOT(loop1()));
+    timer1->start();
 }
 
 void MainWindow::createActions()
 {
     zoom_in  = new QAction(tr("zoom &in"), this);
     zoom_out  = new QAction(tr("zoom &out"), this);
-
-
     caoche  = new QAction(QIcon("/home/rd/glgl/ico/uvd.png"),tr("&File"),this);
-
-
 }
 
 void MainWindow::createMenus()
@@ -112,10 +110,27 @@ void MainWindow::createToolsBar()
 {
     editToolBar = addToolBar(tr("cao"));
     editToolBar->addAction(caoche);
-
 }
 
 MainWindow::~MainWindow()
 {
+
+}
+
+void MainWindow::loop1()
+{
+//    Nothing to do here, just redraw
+
+    static int i = 0;
+    i++;
+    if(i%2)
+    {
+        setWindowFlags(windowFlags()& ~Qt::WindowMaximizeButtonHint& ~Qt::WindowMinimizeButtonHint);
+        showMaximized();
+    }else
+    {
+        setWindowFlags(windowFlags()& ~Qt::WindowMaximizeButtonHint& ~Qt::WindowMinimizeButtonHint);
+        showNormal();
+    }
 
 }

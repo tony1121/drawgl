@@ -23,6 +23,8 @@ public:
     void createActions();
     void createMenus();
     void createToolsBar();
+    QTimer *timer1;
+
 
 
 private:
@@ -47,7 +49,8 @@ private:
     QToolBar *editToolBar;
     QTabWidget *select_interface;
 
-
+public slots:
+    void loop1();
 
 };
 

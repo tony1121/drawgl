@@ -51,7 +51,7 @@ protected:
 //    virtual void resizeGL(int width, int height);
     void resizeGL(int width, int heitht) Q_DECL_OVERRIDE;
     void mousePressEvent(QMouseEvent* event) override;
-//    void mouseReleaseEvent(QMouseEvent* event) override;
+    void mouseReleaseEvent(QMouseEvent* event) override;
     void mouseMoveEvent(QMouseEvent* event) override;
 
     void keyPressEvent(QKeyEvent *event) override;
