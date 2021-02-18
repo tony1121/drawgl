@@ -14,8 +14,6 @@ MainWindow::MainWindow(QWidget *parent)
 {
     centralWidget = new QWidget;
 
-
-
     setCentralWidget(centralWidget);
 
     glWidget = new GLWidget;
@@ -35,13 +33,14 @@ MainWindow::MainWindow(QWidget *parent)
 
 
 
-    //slider
+    //slider huakuai
     QSlider *slider = new QSlider(Qt::Horizontal);
     slider->setRange(0, 16 * 250);
     slider->setSingleStep(30);
     slider->setPageStep(15 * 16);
     slider->setTickInterval(15 * 16);
     slider->setTickPosition(QSlider::TicksLeft);
+
 #if 0
     //widget
     QGridLayout *centralLayout = new QGridLayout;
@@ -81,16 +80,12 @@ MainWindow::MainWindow(QWidget *parent)
     centralWidget->setLayout(centralLayout);
 //    createToolsBar();
 
-    select_interface->setTabPosition(QTabWidget::West);//将tabBar的位置放在左边
-    select_interface->show();
-
-
-
+  //  select_interface->setTabPosition(QTabWidget::West);//将tabBar的位置放在左边
+ //   select_interface->show();
 
     //title
-    setWindowTitle(tr("Grabeer"));
-
-
+//    setWindowTitle(tr("Grabeer"));
+  //  setWindowIcon(QIcon("/home/rd/glgl/uvd.png"));
 }
 
 void MainWindow::createActions()
@@ -110,10 +105,7 @@ void MainWindow::createMenus()
     fileMenu->addAction(zoom_in);
 
   //  fileMenu->addSeparator();
-
-
     fileMenu->addAction(zoom_out);
-
 }
 
 void MainWindow::createToolsBar()

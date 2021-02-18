@@ -9,18 +9,6 @@
 using namespace std;
 
 
-// 窗口大小变化回调函数
-void reshape(int w, int h) {
-    glViewport(0, 0, w, h);
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    gluPerspective(100.0, (GLfloat)w/(GLfloat)h, 0.1, 100000.0);
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-    gluLookAt(0, 0, 10000, 0, 0, 0, 0, 1, 0);
-    std::cout<<"w: "<<w<<" h: "<<h<<std::endl;
-}
-
 GLWidget::GLWidget(QWidget *parent) : QGLWidget(parent)
 {
     showNormal();
@@ -34,6 +22,7 @@ GLWidget::GLWidget(QWidget *parent) : QGLWidget(parent)
     timer->setInterval(15);
     connect(timer, SIGNAL(timeout()), this, SLOT(loop()));
     timer->stop();
+//    setWindowIcon(QIcon("/home/rd/glgl/uvd.png"));
 
 }
 
@@ -84,7 +73,7 @@ void GLWidget::paintGL()
     glLoadIdentity ();
     gluPerspective(Perspective_theta, (GLfloat) width()/(GLfloat) height() ,  0.01, 400000);
 
- //   std::cout<<Perspective_theta<<std::endl;
+//    std::cout<<Perspective_theta<<std::endl;
 
     glClearColor(0.6, 0.6,0.8, 0.5);
     glMatrixMode(GL_MODELVIEW);                                  //中设置的颜色和缓存深度等起作用
@@ -167,11 +156,11 @@ void GLWidget::paintGL()
         glEnd();
         if(!esc_Escape)
         {
-        glBegin(GL_LINES);
-        glColor3f( 0, 0, 0);
-        glVertex3i(point_draw.at(i).x,point_draw.at(i).y,point_draw.at(i).z);
-        glVertex3i(point_x_old,point_y_old,0);
-        glEnd();
+            glBegin(GL_LINES);
+            glColor3f( 0, 0, 0);
+            glVertex3i(point_draw.at(i).x,point_draw.at(i).y,point_draw.at(i).z);
+            glVertex3i(point_x_old,point_y_old,0);
+            glEnd();
         }
         }
 //        glBegin(GL_LINES);
@@ -300,6 +289,7 @@ void GLWidget::mouseMoveEvent(QMouseEvent *event)
 //    std::cout<<event->pos().x()<<": "<<event->pos().y()<<width()<<height()<<"   "<<x1<<" and "<<y1<<std::endl;
  //   std::cout<<point_x<<" : "<<point_y<<std::endl;
 //    std::cout<<x1<<" 22222: "<<y1<<std::endl;
+
 }
 
 void GLWidget::mousePressEvent(QMouseEvent *event)
@@ -353,7 +343,7 @@ void GLWidget::keyPressEvent(QKeyEvent *event)
     {
     case Qt::Key_F2:
     {
-  //      std::cout<<"key press"<<std::endl;
+        std::cout<<"key press"<<std::endl;
         mFullScreen = !mFullScreen;
         if(mFullScreen) {
             showFullScreen();
@@ -374,6 +364,7 @@ void GLWidget::keyPressEvent(QKeyEvent *event)
 
 void GLWidget::wheelEvent(QWheelEvent* event)
 {
+//    std::cout<<" uuuuuuuuu "<<std::endl;
     wheeldelta = (float)event->delta();
     QPoint qpMag = event->angleDelta();
     int iMag = qpMag.y();
@@ -400,4 +391,6 @@ void GLWidget::wheelEvent(QWheelEvent* event)
          Perspective_theta = Perspective_theta*m_iMag;
     else
         Perspective_theta = 120;
+    updateGL();
+
 }

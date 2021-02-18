@@ -21,3 +21,19 @@ SOURCES += main.cpp\
 
 HEADERS  += mainwindow.h \
     glwidget.h
+
+#RESOURCES += \
+#    ico.qrc
+
+#RC_ICONS = 020817121245_0auto.ico
+#RCC_DIR = /home/rd/glgl/ico
+
+
+DISTFILES += \
+    ico.rc
+#    020817121245_0auto.ico
+
+RC_FILE = ico.rc
+
+RESOURCES += \
+    ico/ico.qrc

@@ -1,0 +1,14 @@
+<RCC>
+    <qresource prefix="/">
+        <file>ico/uvd.png</file>
+        <file>ico/steer_adj.png</file>
+        <file>ico/reload.png</file>
+        <file>ico/over.png</file>
+        <file>ico/no_ob.png</file>
+        <file>ico/map_center.png</file>
+        <file>ico/lane_center.png</file>
+        <file>ico/chr.png</file>
+        <file>ico/chl.png</file>
+        <file>ico/auto.png</file>
+    </qresource>
+</RCC>
