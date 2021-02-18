@@ -38,6 +38,7 @@ void GLWidget::loop()
 }
 
 
+
 void GLWidget::initializeGL()
 {
     glShadeModel(GL_SMOOTH); // 启用阴影平滑
@@ -315,6 +316,7 @@ void GLWidget::keyPressEvent(QKeyEvent *event)
     case Qt::Key_F2:
     {
         std::cout<<"key press"<<std::endl;
+        emit F2_pressed();
         mFullScreen = !mFullScreen;
         if(mFullScreen) {
 //            setWindowFlags(Qt::Window);

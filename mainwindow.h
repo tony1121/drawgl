@@ -2,12 +2,14 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QtWidgets/qpushbutton.h>
 
 class QAction;
 class QLabel;
 class QMenu;
 class QSlider;
 class QScrollArea;
+class QPushButton;
 
 class GLWidget;
 
@@ -24,6 +26,8 @@ public:
     void createMenus();
     void createToolsBar();
     QTimer *timer1;
+    bool press_bool = false;
+
 
 
 
@@ -49,8 +53,13 @@ private:
     QToolBar *editToolBar;
     QTabWidget *select_interface;
 
+    QPushButton *ok_button;
+
+
+
 public slots:
     void loop1();
+    void F2_pressed_slot();
 
 };
 

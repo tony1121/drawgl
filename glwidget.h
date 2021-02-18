@@ -91,6 +91,7 @@ private:
 
 signals:
     void emitClose();
+    void F2_pressed();
 public slots:
     void loop();
     void setupScene(QString fileName);
