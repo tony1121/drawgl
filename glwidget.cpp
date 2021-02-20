@@ -19,8 +19,6 @@ GLWidget::GLWidget(QWidget *parent) : QGLWidget(parent)
     timer->setInterval(15);
     connect(timer, SIGNAL(timeout()), this, SLOT(loop()));
     timer->start();
-  //  timer->stop();
-
 }
 
 void GLWidget::setupScene(QString fn)
@@ -80,6 +78,7 @@ void GLWidget::paintGL()
 
     glRotatef(m_rotx, 0, 1, 0);
     glRotatef(m_roty, 0, 0, 1);
+
 
     length_g = 20000*tan(M_PI/180*(Perspective_theta/2));
 
@@ -159,15 +158,6 @@ void GLWidget::paintGL()
             glEnd();
         }
         }
-//        glBegin(GL_LINES);
-//        glColor3f( 0, 0, 0);
-//        glVertex3i(point_x_new, point_y_new, 0);//单位cm
-//        glVertex3i(point_x_old, point_y_old, 0);//单位cm
-
-//  //      while(point_x_new == )
-//        std::cout<<point_x_new<<"........."<<point_y_new<<std::endl;
-//  //      glVertex3i((point_x, point_y);//单位cm
-//        glEnd();
     }else
         point_draw.clear();
 

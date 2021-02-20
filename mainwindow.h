@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QtWidgets/qpushbutton.h>
+#include <QtWidgets/qtreewidget.h>
 
 class QAction;
 class QLabel;
@@ -12,6 +13,7 @@ class QScrollArea;
 class QPushButton;
 
 class GLWidget;
+class QTreeWidget;
 
 class MainWindow : public QMainWindow
 {
@@ -55,11 +57,16 @@ private:
 
     QPushButton *ok_button;
 
+    QTreeWidget *newTree;
 
 
-public slots:
+
+private slots:
     void loop1();
     void F2_pressed_slot();
+    void on_caoche_triggered(bool checked);
+    void PartiallyCheck(QTreeWidgetItem *item);
+    void treeCheck(QTreeWidgetItem *item, int column);
 
 };
 
