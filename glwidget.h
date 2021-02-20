@@ -20,6 +20,7 @@
 #include <sstream>
 #include <iostream>
 #include <QDebug>
+#include "paint_graph.h"
 
 
 typedef struct{
@@ -28,7 +29,9 @@ typedef struct{
     float z;
 }point_type_t;
 
-class GLWidget : public QGLWidget
+
+
+class GLWidget : public QGLWidget,public PaintGraph
 {
     Q_OBJECT
 public:

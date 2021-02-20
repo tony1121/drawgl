@@ -122,7 +122,6 @@ void GLWidget::paintGL()
     }
   //     glui->statusBar->showMessage(tr("临时信息!"),2000);
 
-
     if(bbbchecked)
     {
         int i;
@@ -195,7 +194,6 @@ void GLWidget::paintGL()
         }
     }else
         fill_draw.clear();
-
             glPointSize(5);
             glBegin(GL_POINTS);
             glColor3f( 255, 0, 0);
@@ -205,6 +203,12 @@ void GLWidget::paintGL()
 
             glColor3ub(166,166,1);
             glRect(0,0,200,200,GL_POLYGON);
+
+            DrawCircle();
+     //       DrawCube();
+     //       DrawCone();
+     //       DrawCylinder();
+     //       DrawCube();
 }
 
 

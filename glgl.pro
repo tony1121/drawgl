@@ -7,7 +7,7 @@
 QT       += core gui
 QT += opengl
 
-LIBS += -lglut -lGLU
+LIBS += -lglut -lGLU -lm
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -17,10 +17,12 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    glwidget.cpp
+    glwidget.cpp \
+    paint_graph.cpp
 
 HEADERS  += mainwindow.h \
-    glwidget.h
+    glwidget.h \
+    paint_graph.h
 
 #RESOURCES += \
 #    ico.qrc
