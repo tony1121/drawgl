@@ -74,8 +74,8 @@ void GLWidget::paintGL()
 
     glRotatef(90, 0, 0, 1);
 
-    glRotatef(m_rotx, 0, 1, 0);
-    glRotatef(m_roty, 0, 0, 1);
+  //  glRotatef(m_rotx, 0, 1, 0);
+  //  glRotatef(m_roty, 0, 0, 1);
 
 
     length_g = 20000*tan(M_PI/180*(Perspective_theta/2));
@@ -135,14 +135,16 @@ void GLWidget::paintGL()
             glVertex3d(point_draw.at(i).x, point_draw.at(i).y, 0.0);
             glEnd();
 
-            drawBezierLine(arr_point, 1);
-            glBegin(GL_LINES);
-            glColor3f( 0, 0, 0);
-            glVertex3i(point_draw.at(i).x,point_draw.at(i).y,point_draw.at(i).z);
-            glVertex3i(point_draw.at(i+1).x,point_draw.at(i+1).y,point_draw.at(i+1).z);
-            glEnd();
+//            glBegin(GL_LINES);
+//            glColor3f( 0, 0, 0);
+//            glVertex3i(point_draw.at(i).x,point_draw.at(i).y,point_draw.at(i).z);
+//            glVertex3i(point_draw.at(i+1).x,point_draw.at(i+1).y,point_draw.at(i+1).z);
+//            glEnd();
 
         }
+
+        drawBezierLine(arr_point, 1);
+
         glPointSize(5);
         glBegin(GL_POINTS);
         glColor3f( 255, 0, 0);
@@ -162,12 +164,10 @@ void GLWidget::paintGL()
 
     if(fillchecked)
     {
-
         int i;
         float x_down,x_up,y_right,y_left;
         for(i=0;i<fill_draw.size();i++)
         {
-
             if(fill_draw[i].x >= 0)
             {
                 x_down = ((int)fill_draw[i].x / 200)*200;

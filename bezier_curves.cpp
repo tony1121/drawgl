@@ -75,15 +75,11 @@ void BezierCurves::BezierCtrlPts(QPointF p0, QPointF p1, QPointF p2, QPointF p3,
 QPointF BezierCurves::drawBezierLine(std::vector<QPointF> PT, double t) {
     QPointF CP0,CP1;
     std::vector<QPointF> PT_tmp = PT;
-  //  QPointF p1 = PT_tmp[0];
     std::vector<QPointF> tmp_point;
-    QPointF tmp_point_last;
     int i;
 
 #if 1
     int num = PT_tmp.size();
-  //  for(int k=0;k<PT_tmp.size();k++)
-  //      std::cout<<"size: "<<num<<" : "<<PT_tmp[k].xp<<" : "<<PT_tmp[k].yp<<std::endl;
     if(num == 1)
         return CP0;
     else if(num == 2)
@@ -102,13 +98,13 @@ QPointF BezierCurves::drawBezierLine(std::vector<QPointF> PT, double t) {
             tmp_point.push_back(CP1);
             tmp_point.push_back(PT_tmp[i+1]);
 
-            paintgraph.drawDot(tmp_point[0]);
-            paintgraph.drawDot(tmp_point[1]);
-            paintgraph.drawDot(tmp_point[2]);
-            paintgraph.drawDot(tmp_point[3]);
+//            paintgraph.drawDot(tmp_point[0]);
+//            paintgraph.drawDot(tmp_point[1]);
+//            paintgraph.drawDot(tmp_point[2]);
+//            paintgraph.drawDot(tmp_point[3]);
 
             QPointF p1 = PT_tmp[i];
-            for(double t = 0.0;t <= 1.0; t += 0.02)
+            for(double t = 0.0;t <= 1.0; t += 0.2)
             {
                 QPointF p2 = drawBezierGeneralized(tmp_point,t);
                 paintgraph.drawLine(p1, p2);
@@ -117,9 +113,6 @@ QPointF BezierCurves::drawBezierLine(std::vector<QPointF> PT, double t) {
             glColor3f(0.0,0.0,0.0);
 
             tmp_point.clear();
-     //       std::vector<QPointF>::iterator ite = PT_tmp.begin();
-     //       PT_tmp.erase(ite);
-     //       tmp_point.clear();
         }
         {
         BezierCtrlPts(PT_tmp[i-1],PT_tmp[i],PT_tmp[i+1],PT_tmp[i+1],CP0,CP1);
@@ -128,13 +121,13 @@ QPointF BezierCurves::drawBezierLine(std::vector<QPointF> PT, double t) {
         tmp_point.push_back(CP1);
         tmp_point.push_back(PT_tmp[i+1]);
 
-        paintgraph.drawDot(tmp_point[0]);
-        paintgraph.drawDot(tmp_point[1]);
-        paintgraph.drawDot(tmp_point[2]);
-        paintgraph.drawDot(tmp_point[3]);
+//        paintgraph.drawDot(tmp_point[0]);
+//        paintgraph.drawDot(tmp_point[1]);
+//        paintgraph.drawDot(tmp_point[2]);
+//        paintgraph.drawDot(tmp_point[3]);
 
         QPointF p1 = PT_tmp[i];
-        for(double t = 0.0;t <= 1.0; t += 0.02)
+        for(double t = 0.0;t <= 1.0; t += 0.2)
         {
             QPointF p2 = drawBezierGeneralized(tmp_point,t);
             paintgraph.drawLine(p1, p2);
@@ -154,7 +147,7 @@ QPointF BezierCurves::drawBezierLine(std::vector<QPointF> PT, double t) {
         tmp_point.push_back(CP1);
         tmp_point.push_back(PT_tmp[1]);
         QPointF p1 = PT_tmp[0];
-        for(double t = 0.0;t <= 1.0; t += 0.02)
+        for(double t = 0.0;t <= 1.0; t += 0.2)
         {
             QPointF p2 = drawBezierGeneralized(tmp_point,t);
             paintgraph.drawLine(p1, p2);
@@ -170,19 +163,11 @@ QPointF BezierCurves::drawBezierLine(std::vector<QPointF> PT, double t) {
         tmp_point.push_back(CP1);
         tmp_point.push_back(PT_tmp[i+1]);
         QPointF p1 = PT_tmp[i];
-
-//        std::cout<<"start: "<<std::endl;
-//        std::cout<<tmp_point[0].x<<" : "<<tmp_point[0].y<<"  ";
-//        std::cout<<tmp_point[1].x<<" : "<<tmp_point[1].y<<"  ";
-//        std::cout<<tmp_point[2].x<<" : "<<tmp_point[2].y<<"  ";
-//        std::cout<<tmp_point[3].x<<" : "<<tmp_point[3].y<<"  ";
-//        std::cout<<"end "<<std::endl;
-
-        paintgraph.drawDot(tmp_point[0]);
-        paintgraph.drawDot(tmp_point[1]);
-        paintgraph.drawDot(tmp_point[2]);
-        paintgraph.drawDot(tmp_point[3]);
-        for(double t = 0.0;t <= 1.0; t += 0.02)
+ //       paintgraph.drawDot(tmp_point[0]);
+ //       paintgraph.drawDot(tmp_point[1]);
+ //       paintgraph.drawDot(tmp_point[2]);
+ //       paintgraph.drawDot(tmp_point[3]);
+        for(double t = 0.0;t <= 1.0; t += 0.2)
         {
             QPointF p2 = drawBezierGeneralized(tmp_point,t);
             paintgraph.drawLine(p1, p2);
@@ -192,13 +177,7 @@ QPointF BezierCurves::drawBezierLine(std::vector<QPointF> PT, double t) {
 
         tmp_point.clear();
 
-   //     std::vector<QPointF>::iterator ite = PT_tmp.begin();
-   //     PT_tmp.erase(ite);
-  //      std::cout<<"go: "<<PT_tmp.size()<<std::endl;
-   //     tmp_point.clear();
-  //      tmp_point.pop_back();
         }
-        std::cout<<"iiiiii: "<<i<<std::endl;
 
         {
         BezierCtrlPts(PT_tmp[i-1],PT_tmp[i],PT_tmp[i+1],PT_tmp[i+1],CP0,CP1);
@@ -207,7 +186,7 @@ QPointF BezierCurves::drawBezierLine(std::vector<QPointF> PT, double t) {
         tmp_point.push_back(CP1);
         tmp_point.push_back(PT_tmp[i+1]);
         QPointF p1 = PT_tmp[i];
-        for(double t = 0.0;t <= 1.0; t += 0.02)
+        for(double t = 0.0;t <= 1.0; t += 0.2)
         {
             QPointF p2 = drawBezierGeneralized(tmp_point,t);
             paintgraph.drawLine(p1, p2);
@@ -220,7 +199,6 @@ QPointF BezierCurves::drawBezierLine(std::vector<QPointF> PT, double t) {
     }
 
 #endif
-
 }
 
 
