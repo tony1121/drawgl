@@ -21,12 +21,12 @@ GLWidget::GLWidget(QWidget *parent) : QGLWidget(parent)
     timer->start();
 }
 
-void GLWidget::setupScene(QString fn)
-{
-    // Set the filename and start the timer
-    fileName = fn;
-    timer->start();
-}
+//void GLWidget::setupScene(QString fn)
+//{
+//    // Set the filename and start the timer
+//    fileName = fn;
+//    timer->start();
+//}
 
 void GLWidget::loop()
 {
@@ -34,8 +34,6 @@ void GLWidget::loop()
     updateGL();
 
 }
-
-
 
 void GLWidget::initializeGL()
 {
@@ -81,6 +79,7 @@ void GLWidget::paintGL()
 
 
     length_g = 20000*tan(M_PI/180*(Perspective_theta/2));
+
 
 #if 1
     glLineWidth(2);
@@ -136,6 +135,7 @@ void GLWidget::paintGL()
             glVertex3d(point_draw.at(i).x, point_draw.at(i).y, 0.0);
             glEnd();
 
+            drawBezierLine(arr_point, 1);
             glBegin(GL_LINES);
             glColor3f( 0, 0, 0);
             glVertex3i(point_draw.at(i).x,point_draw.at(i).y,point_draw.at(i).z);
@@ -204,7 +204,9 @@ void GLWidget::paintGL()
             glColor3ub(166,166,1);
             glRect(0,0,200,200,GL_POLYGON);
 
-            DrawCircle();
+            paintgraph.DrawCylinder();
+ //           DrawCircle();
+
      //       DrawCube();
      //       DrawCone();
      //       DrawCylinder();
@@ -249,6 +251,7 @@ void GLWidget::mouseMoveEvent(QMouseEvent *event)
 void GLWidget::mousePressEvent(QMouseEvent *event)
 {
     point_type_t point_data;
+    QPointF arr_point_tmp;
 //    std::cout<<"press  ....."<<std::endl;
 
     if(event->button() == Qt::LeftButton)
@@ -272,6 +275,12 @@ void GLWidget::mousePressEvent(QMouseEvent *event)
            point_data.y = point_y;
            point_data.z = 0;
            point_draw.push_back(point_data);
+
+           arr_point_tmp.xp = point_x;
+           arr_point_tmp.yp = point_y;
+           arr_point.push_back(arr_point_tmp);
+
+
     }
     esc_Escape = 0;
 

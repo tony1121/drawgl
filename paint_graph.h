@@ -21,6 +21,7 @@
 #include <QMessageBox>
 #include <sstream>
 #include <QDebug>
+#include "func_common.h"
 
 
 class PaintGraph {
@@ -33,6 +34,10 @@ class PaintGraph {
   void DrawCircle();
   void DrawCylinder();
   void DrawCone();
+  void DrawPolygonCircle();
+  void drawDot(QPointF p1);
+  void drawLine(QPointF p1, QPointF p2);
+
 };
 
 

@@ -20,7 +20,10 @@
 #include <sstream>
 #include <iostream>
 #include <QDebug>
+#include <QPainter>
+
 #include "paint_graph.h"
+#include "bezier_curves.h"
 
 
 typedef struct{
@@ -31,7 +34,7 @@ typedef struct{
 
 
 
-class GLWidget : public QGLWidget,public PaintGraph
+class GLWidget : public QGLWidget,public BezierCurves
 {
     Q_OBJECT
 public:
@@ -42,11 +45,10 @@ public:
     bool fillchecked = false;
     float point_x;
     float point_y;
+    std::vector<QPointF> arr_point;
 
 //    Ui::MainWindow *glui;
 //    MainWidow *widow;
-
-
 
 protected:
     void initializeGL();
@@ -97,7 +99,7 @@ signals:
     void F2_pressed();
 public slots:
     void loop();
-    void setupScene(QString fileName);
+//    void setupScene(QString fileName);
 
 };
 

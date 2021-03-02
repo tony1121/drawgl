@@ -113,6 +113,43 @@ MainWindow::MainWindow(QWidget *parent)
     tab_2->setObjectName(QStringLiteral("tab_2"));
 
 
+
+#if 0
+            static QList<QPointF> points = QList<QPointF>() << QPointF(0, 0) << QPointF(1000, 1000);
+            QPainterPath path(points[0]);
+            //计算
+            QPointF c1;
+            QPointF c2;
+            for (int i = 0; i < points.size() - 1; ++i) {
+                // 控制点的 x 坐标为 sp 与 ep 的 x 坐标和的一半
+                // 第一个控制点 c1 的 y 坐标为起始点 sp 的 y 坐标
+                // 第二个控制点 c2 的 y 坐标为结束点 ep 的 y 坐标
+                QPointF sp = points[i];
+                QPointF ep = points[i+1];
+                c1 = QPointF((sp.x() + ep.x()) / 2, sp.y());
+                c2 = QPointF((sp.x() + ep.x()) / 2, ep.y());
+                path.cubicTo(c1, c2, ep);
+            }
+            QPainter painter(tab_2);
+            //设置渲染提示为消除锯齿
+            painter.setRenderHint(QPainter::Antialiasing, true);
+            //设置画笔颜色和宽度
+            painter.setPen(QPen(Qt::black, 2));
+            //将坐标系转换为矢量
+            painter.translate(40, 130);
+            //绘制path
+            painter.drawPath(path);
+            // 绘制曲线上的点
+            painter.setBrush(Qt::gray);
+            //绘制曲线上的点
+            for (int i = 0; i < points.size(); ++i) {
+                painter.drawEllipse(points[i], 4, 4);
+            }
+            painter.drawEllipse(c1 , 4, 4);
+            painter.drawEllipse(c2 , 4, 4);
+
+#endif
+
     QWidget *tab_3;
     tab_3 = new QWidget();
     tab_3->setObjectName(QStringLiteral("tab_3"));
@@ -198,6 +235,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(glWidget,SIGNAL(F2_pressed()),this,SLOT(F2_pressed_slot()));
 
     connect(caoche,SIGNAL(triggered(bool)),this,SLOT(on_caoche_triggered(bool)));
+    connect(lines,SIGNAL(triggered(bool)),this,SLOT(on_lines_triggered(bool)));
 
 }
 
@@ -208,6 +246,8 @@ void MainWindow::createActions()
     zoom_in  = new QAction(tr("zoom &in"), this);
     zoom_out  = new QAction(tr("zoom &out"), this);
     caoche  = new QAction(QIcon("/home/rd/glgl/ico/uvd.png"),tr("&File"),this);
+    lines  = new QAction(QIcon("/home/rd/glgl/ico/auto.png"),tr("&File"),this);
+
 }
 
 void MainWindow::createMenus()
@@ -224,6 +264,9 @@ void MainWindow::createToolsBar()
     editToolBar = addToolBar(tr("cao"));
     editToolBar->addAction(caoche);
     caoche->setCheckable(true);
+
+    editToolBar->addAction(lines);
+    lines->setCheckable(true);
 }
 
 MainWindow::~MainWindow()
@@ -242,6 +285,19 @@ void MainWindow::on_caoche_triggered(bool checked)
     }
 
     std::cout<<"checked: "<<checked<<std::endl;
+}
+
+void MainWindow::on_lines_triggered(bool checked)
+{
+ //   std::cout<<"funck"<<std::endl;
+    if(checked)
+        this->glWidget->bbbchecked = true;
+    else
+    {
+        this->glWidget->bbbchecked = false;
+    }
+
+ //   std::cout<<"checked: "<<checked<<std::endl;
 }
 
 

@@ -18,11 +18,14 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     glwidget.cpp \
-    paint_graph.cpp
+    paint_graph.cpp \
+    bezier_curves.cpp
 
 HEADERS  += mainwindow.h \
     glwidget.h \
-    paint_graph.h
+    paint_graph.h \
+    bezier_curves.h \
+    func_common.h
 
 #RESOURCES += \
 #    ico.qrc

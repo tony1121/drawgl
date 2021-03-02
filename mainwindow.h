@@ -49,6 +49,7 @@ private:
     QAction *zoom_out;
 
     QAction *caoche;
+    QAction *lines;
 
 
     QMenu *fileMenu;
@@ -65,6 +66,8 @@ private slots:
     void loop1();
     void F2_pressed_slot();
     void on_caoche_triggered(bool checked);
+    void on_lines_triggered(bool checked);
+
     void PartiallyCheck(QTreeWidgetItem *item);
     void treeCheck(QTreeWidgetItem *item, int column);
 

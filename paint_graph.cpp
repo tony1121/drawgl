@@ -36,6 +36,24 @@ void PaintGraph::DrawCube()
     glVertex3f(100.0f, 100.0f, -100.0f);
 	glEnd();
 }
+
+void PaintGraph::DrawPolygonCircle()
+{
+    glClear(GL_COLOR_BUFFER_BIT);       //清除。GL_COLOR_BUFFER_BIT表示清除颜色
+    float R = 0.5f;
+    int n = 80;     //这里的n表示用多边形绘制圆的精度，可以考虑增大精度
+    glBegin(GL_POLYGON);
+    /*
+        表示对以下画出的点进行的操作，这里是形成多边形
+        类似的还有GL_LINE_STRIP、GL_LINE_LOOP、GL_POINT等
+    */
+    for (int i = 0; i < n; i++)     //通过数学计算来画多边形的点
+    {
+        glVertex2f(R*cos(2 * M_PI*i / n), R*sin(2 * M_PI*i / n));
+    }
+    glEnd();
+}
+
 void PaintGraph::DrawCircle()
 {
 	glBegin(GL_TRIANGLE_FAN);//扇形连续填充三角形串
@@ -48,6 +66,7 @@ void PaintGraph::DrawCircle()
 	}
 	glEnd();
 }
+
 void PaintGraph::DrawCylinder()
 {
 	glBegin(GL_QUAD_STRIP);//连续填充四边形串
@@ -116,3 +135,25 @@ void renderScene(void)
 	glutSwapBuffers();
 }
 #endif
+
+void PaintGraph::drawDot(QPointF p1) {
+    glPointSize(5);
+    glBegin(GL_POINTS);
+    glColor3f( 255, 0, 0);
+  //   glVertex2f(p1.x,p1.y);
+    glVertex3d(p1.xp, p1.yp, 0.0);
+    glEnd();
+
+ //   glFlush();
+}
+
+void PaintGraph::drawLine(QPointF p1, QPointF p2)
+{
+    glBegin(GL_LINES);
+
+      glVertex2f(p1.xp, p1.yp);
+      glVertex2f(p2.xp, p2.yp);
+    glEnd();
+    glFlush();
+
+}
